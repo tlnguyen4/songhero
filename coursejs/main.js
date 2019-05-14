@@ -205,43 +205,33 @@ function setUpGame(songIndex) {
   // Hide guess buttons
   hideGuessButtons();
 
-  startGame(songIndex);
+  // Do 3..2..1.. count down before starting the game
+  let inscanvas = document.getElementById("instructioncanvas");
+  let ctx = inscanvas.getContext("2d");
+
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "red";
+  ctx.fillText("3..", 310, 30);
+
+  setTimeout(function() {
+    ctx.fillText("2..", 345, 30);
+
+    setTimeout(function() {
+      ctx.fillText("1..", 380, 30);
+
+      setTimeout(function() {
+        ctx.fillStyle = "green";
+        ctx.fillText("GO!!!", 410, 30);
+
+        setTimeout(function() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          startGame(songIndex);
           showGuessButtons();
           populateGuess();
-
-  // // Do 3..2..1.. count down before starting the game
-  // let inscanvas = document.getElementById("instructioncanvas");
-  // let ctx = inscanvas.getContext("2d");
-
-  // //ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // ctx.clearRect(0, 0, inscanvas.width, inscanvas.height);
-
-  // ctx.font = "30px Arial";
-  // ctx.fillStyle = "red";
-  // ctx.fillText("3", 380, 30);
-
-  // setTimeout(function() {
-  //   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //   ctx.fillText("2", 380, 30);
-
-  //   setTimeout(function() {
-  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //     ctx.fillText("1", 380, 30);
-
-  //     setTimeout(function() {
-  //       ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //       ctx.fillStyle = "green";
-  //       ctx.fillText("GO", 360, 30);
-
-  //       setTimeout(function() {
-  //         ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //         startGame(songIndex);
-  //         showGuessButtons();
-  //         populateGuess();
-  //       }, 1000);
-  //     }, 1000);
-  //   }, 1000);
-  // }, 1000);
+        }, 1000);
+      }, 1000);
+    }, 1000);
+  }, 1000);
 }
 
 function startGame(songIndex) {
@@ -353,6 +343,6 @@ window.onload = function() {
   c.addEventListener("click", function() {
     onClick();
   });
-  
+
   camera.position.z = 5;
 };
