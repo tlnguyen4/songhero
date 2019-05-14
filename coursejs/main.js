@@ -19,6 +19,8 @@ let timerID = undefined;
 let scene;
 let camera;
 let renderer;
+let raycaster;
+let mouse;
 
 let shapes = [];
 let insshapes = [];
@@ -87,10 +89,24 @@ function initInsCanvas() {
 }
 
 function onClick() {
-  for (var i = 0; i < shapes.length; i++) {
-    let shape = shapes[i];
-    shape.click(event);
-  }
+  // console.log(shapes);
+  // for (var i = 0; i < shapes.length; i++) {
+  //   let shape = shapes[i];
+  //   shape.click(event);
+  // }
+  var c = document.getElementById("canvas");
+  var canvasOffset = c.getBoundingClientRect();
+  var eventX = event.pageX - canvasOffset.x;
+  var eventY = event.pageY - canvasOffset.y;
+  mouse.x = ( eventX / 800 ) * 2 - 1;
+	mouse.y = - ( eventY / 500 ) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  var intersects = raycaster.intersectObjects(scene.children);
+   for( var i = 0; i < intersects.length; i++ ) {
+     var intersection = intersects[ i ],
+     obj = intersection.object;
+     console.log("Intersected object", obj);
+   }
 }
 
 function checkColorIndex() {
@@ -157,7 +173,7 @@ function checkAnswer(song) {
     if (currentSongIndex >= 3) {
       currentSongIndex = 0;
     }
-    
+
     document.getElementById('nextaction').addEventListener('click', function() {
       setUpGame(currentSongIndex);
     });
@@ -173,7 +189,7 @@ function checkAnswer(song) {
     (document.getElementById("nextaction")).setAttribute("class", "btn btn-dark");
 
     $('#modal').modal('toggle');
-    
+
     document.getElementById('nextaction').addEventListener('click', function() {
       setUpGame(currentSongIndex);
     });
@@ -181,7 +197,7 @@ function checkAnswer(song) {
 }
 
 function setUpGame(songIndex) {
-  // Hide guess buttons 
+  // Hide guess buttons
   hideGuessButtons();
 
   startGame(songIndex);
@@ -247,14 +263,14 @@ function startGame(songIndex) {
 
     const color = getRGB(colors[i].color);
     for (let i = 0; i < geometry.faces.length; i++) {
-      geometry.faces[ i ].color.setRGB( color[0] + Math.random() * 0.1 , color[1] + Math.random() * 0.2, color[2] + Math.random() * 0.2 );     
+      geometry.faces[ i ].color.setRGB( color[0] + Math.random() * 0.1 , color[1] + Math.random() * 0.2, color[2] + Math.random() * 0.2 );
     }
 
     var mat = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
     let shape = new THREE.Mesh( geometry, mat );
     shape.position.set(xs[i], y, 1);
     scene.add( shape );
-    
+
     shapes.push(shape);
   }
   // songs[songIndex].last = xs.length;
@@ -266,7 +282,7 @@ function startGame(songIndex) {
     requestAnimationFrame( animate );
 
     for (let i = 0; i < shapes.length; i++) {
-      console.log("x: ", shapes[i].position.x);
+      // console.log("x: ", shapes[i].position.x);
       const rand = (Math.random() + shapes[i].position.y) / 30;
       shapes[i].rotation.x += rand;
       shapes[i].rotation.y += rand;
@@ -319,13 +335,21 @@ window.onload = function() {
       checkAnswer(button.value);
     });
   }
-
+  mouse = new THREE.Vector2();
+  raycaster = new THREE.Raycaster();
   scene = new THREE.Scene();
   scene.background = new THREE.Color( 0xffffff )
   camera = new THREE.PerspectiveCamera( 75, 810/500, 0.1, 1000 );
 
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(810, 500);
-  document.getElementById('canvas').appendChild( renderer.domElement );
+  let c = document.getElementById('canvas')
+  c.appendChild(renderer.domElement);
+  c.addEventListener("click", function() {
+    onClick();
+  });
+
+
+
   camera.position.z = 5;
 };

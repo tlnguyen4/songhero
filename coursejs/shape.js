@@ -44,6 +44,7 @@ function Shape(x, y, canvas, rad, color, song, pos, dur, shape) {
   }
 
   this.click = function(event) {
+    console.log("oink");
     var c = document.getElementById(this.canvas);
     var canvasOffset = c.getBoundingClientRect();
 
@@ -84,7 +85,7 @@ function Shape(x, y, canvas, rad, color, song, pos, dur, shape) {
       this.remove();
 
       this.pos = this.song.last;
-      this.song.last = this.song.last + 1;      
+      this.song.last = this.song.last + 1;
 
       let shape;
       if (this.pos < this.song.notes.length) {
