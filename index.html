@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> COS426 Assignment 3 &mdash; Rendering &mdash; RayTracer</title>
+    <meta charset="UTF-8">
+    <link href="css/style.css" type="text/css" rel="stylesheet"/>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+    <script src="libjs/three.min.js"> </script>
+    <script src="libjs/OBJLoader.js"> </script>
+    <!-- <script src="libjs/TrackballControls.js"> </script> -->
+
+    <script src="libjs/glMatrix-0.9.5.min.js"> </script>
+
+    <script src="coursejs/raytracer.js"> </script>
+    <script src="coursejs/scene.js"> </script>
+    <script src="coursejs/parser.js"> </script>
+    <script src="coursejs/song.js"></script>
+    <script src="coursejs/shape.js"></script>
+    <script src="coursejs/main.js"> </script>
+
+    <!-- Modal -->
+    <div id="modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modaltitle" class="modal-title">Modal Header</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modalbody">Time: </p>
+                <p id="modalscore">Score: </p>
+                <p id="modalmiss">Click wrong shapes: </p>
+                <p id="modaltotal">TOTAL: </p>
+                <div id="leaderboard">
+                    <hr>
+                    <h5>Leaderboard</h5>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="nextaction" type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+    <div id="main_div">
+        <div id="title">
+            <h1 id="gametitle">Song Hero</h1>
+            <h6>by Traci Mathieu, Thanh Nguyen</h6>
+        </div>
+
+        <div id="game">
+            <canvas id="instructioncanvas" width="810" height="50" style="border:1px solid #000000;"></canvas>
+            <canvas id="canvas" width="810" height="500" style="border:1px solid #000000;"></canvas>
+            <div id="buttons">
+                <div id="insdiv">
+                    <button id="start" type="button" class="btn btn-success">Start</button>
+                </div>
+                <div id="timer">
+                    Timer: 0
+                </div>
+            </div>
+        </div>
+
+        <div id="guess">
+            <h5 id="guesstitle" style="display: none;">Select your guess:</h5>
+            <button id="choice1" value="1" type="button" class="btn btn-dark" style="display: none;">Song 1 by Artist 1</button>
+            <button id="choice2" value="2" type="button" class="btn btn-dark" style="display: none;">Song 2 by Artist 2</button>
+            <button id="choice3" value="3" type="button" class="btn btn-dark" style="display: none;">Song 3 by Artist 3</button>
+            <button id="choice4" value="4" type="button" class="btn btn-dark" style="display: none;">Song 4 by Artist 4</button>
+            <button id="choice5" value="5" type="button" class="btn btn-dark" style="display: none;">Song 5 by Artist 5</button>
+            <button id="choice6" value="6" type="button" class="btn btn-dark" style="display: none;">Song 6 by Artist 6</button>
+        </div>
+    </div>
+</body>
+</html>
