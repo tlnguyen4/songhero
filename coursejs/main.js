@@ -16,6 +16,7 @@ var Main = Main;
 
 let timerID = undefined;
 
+let sceneData;
 let shapes = [];
 let insshapes = [];
 let count = 0;
@@ -58,6 +59,19 @@ shuffle(songs);
 
 //     c.addEventListener("click", onClick, false);
 // }
+
+function initScene() {
+  Scene.sceneName = "default";
+  Raytracer.init(500, 810, false, Scene.getIntersectFunction);
+  Scene.setUniforms();
+
+  const drawScene = function() {
+    Raytracer.render(0);
+    requestAnimationFrame(drawScene);
+  };
+
+  drawScene();
+}
 
 function initInsCanvas() {
   const c = document.getElementById("instructioncanvas");
@@ -235,6 +249,32 @@ function startGame(songIndex) {
   // colorIndex = xs.length;
   // checkColorIndex();
 
+  sceneData = Parser.parseJson("scenes/default.json");
+
+  let newObj = {
+    "comment": "// the matt sphere",
+    "type": "sphere",
+    "center": [-20, -2, 15],
+    "radius": 9,
+    "material": {
+        "color": [0.3, 0.4, 1]
+    }
+  };
+
+  sceneData.objects.push(newObj);
+
+  Scene.sceneName = "default";
+  Raytracer.init(500, 810, false, Scene.getIntersectFunction);
+  Scene.setUniforms();
+
+  const drawScene = function() {
+    Raytracer.render(0);
+    requestAnimationFrame(drawScene);
+  };
+
+  drawScene();
+
+
   // draw shapes on instruction canvas
   initInsCanvas();
   const xaxis = [45, 125, 205, 285, 365, 445, 525, 605, 685, 765];
@@ -277,15 +317,4 @@ window.onload = function() {
       checkAnswer(button.value);
     });
   }
-
-  Scene.sceneName = "default";
-  Raytracer.init(500, 810, false);
-  Scene.setUniforms();
-
-  const drawScene = function() {
-    Raytracer.render(0);
-    requestAnimationFrame(drawScene);
-  };
-
-  drawScene();
 };

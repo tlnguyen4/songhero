@@ -63,22 +63,9 @@
         }
     },
     {
-        "comment": "// the glass sphere",
-        "type": "sphere",
-        "center": [-20, -2, 15],
-        "radius": 8,
-        "material": {
-            "color": [0.6, 0.4, 1],
-            "shininess": 1000,
-            "specular": [1, 1, 1],
-            "reflectivity": 1,
-            "reflectType": "GLASSREFLECT"
-        }
-    },
-    {
         "type": "box",
         "minCorner": [-25, -30, 10],
-        "maxCorner": [-15, -10, 20],
+        "maxCorner": [-15, -15, 20],
         "material": {
             "color": [0.3, 0.6, 0.2]
         }

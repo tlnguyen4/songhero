@@ -89,7 +89,7 @@ Raytracer.initShader = function(program, shaderType, src, debug) {
   return shader;
 };
 
-Raytracer.init = function(height, width, debug) {
+Raytracer.init = function(height, width, debug, func) {
   canvas = document.getElementById("canvas");
   this.gl = canvas.getContext("experimental-webgl", { preserveDrawingBuffer: true });
   // canvas.width = width;
@@ -105,7 +105,7 @@ Raytracer.init = function(height, width, debug) {
 
   var fSrcBase = Parser.parseTxt("shaders/fragmentShader.frag");
   var vSrc = Parser.parseTxt("shaders/vertexShader.vert");
-  var fSrc = fSrcBase + Scene.getIntersectFunction();
+  var fSrc = fSrcBase + func();
 
   this.program = this.gl.createProgram();
 

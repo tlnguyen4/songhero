@@ -47,7 +47,7 @@ var fixPrecision = function(a, precision) {
 Scene.getIntersectFunction = function() {
   var MAX_TRIANGLE = 50;
 
-  var sceneData = Parser.parseJson("scenes/" + Scene.sceneName + ".json");
+  // var sceneData = Parser.parseJson("scenes/" + Scene.sceneName + ".json");
   var count_triangle = 0;
 
   var matStr = "";
