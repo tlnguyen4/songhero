@@ -22,6 +22,7 @@ let renderer;
 let raycaster;
 let mouse;
 
+const numberOfSongs = 3;
 let wrongShapeClicks = 0;
 let shapes3D = [];
 let insshapes = [];
@@ -47,7 +48,7 @@ const notes = [["D4", "D4", "E4", "D4", "G4", "F#4", "D4", "D4",
     "F4", "E4", "E4", "E4", "E4", "G4", "G4", "F4", "D4", "C4"]];
 
 let songs = [];
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i < numberOfSongs; i++) {
   let s = new Song(names[i], artists[i], notes[i]);
   songs.push(s);
 }
