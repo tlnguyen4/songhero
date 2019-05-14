@@ -276,9 +276,10 @@ function startGame(songIndex) {
     let shape = new THREE.Mesh( geometry, mat );
     shape.position.set(xs[i], y, 1);
     scene.add( shape );
-    let shape3D = new Shape3D(shape)
+    let song = songs[currentSongIndex];
+    let shape3D = new Shape3D(shape, song, "8n", i, scene);
     shapes.push(shape);
-    shapes3D.push(shape3D, "C4", "8n");
+    shapes3D.push(shape3D);
 
   }
   // songs[songIndex].last = xs.length;
