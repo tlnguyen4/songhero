@@ -23,6 +23,7 @@ let raycaster;
 let mouse;
 
 let shapes = [];
+let shapes3D = [];
 let insshapes = [];
 let count = 0;
 let currentSongIndex = 0;
@@ -103,8 +104,13 @@ function onClick() {
   raycaster.setFromCamera(mouse, camera);
   var intersects = raycaster.intersectObjects(scene.children);
    for( var i = 0; i < intersects.length; i++ ) {
-     var intersection = intersects[ i ],
-     obj = intersection.object;
+    var intersection = intersects[ i ], obj = intersection.object;
+     for (var j = 0; j < shapes3D.length; j++) {
+       let shape3D = shapes3D[j];
+       if (shape3D.mesh == obj) {
+         shape3D.click();
+       }
+     }
      console.log("Intersected object", obj);
    }
 }
@@ -270,8 +276,10 @@ function startGame(songIndex) {
     let shape = new THREE.Mesh( geometry, mat );
     shape.position.set(xs[i], y, 1);
     scene.add( shape );
-
+    let shape3D = new Shape3D(shape)
     shapes.push(shape);
+    shapes3D.push(shape3D, "C4", "8n");
+
   }
   // songs[songIndex].last = xs.length;
   colorIndex = xs.length;
