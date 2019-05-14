@@ -22,7 +22,6 @@ let renderer;
 let raycaster;
 let mouse;
 
-let shapes = [];
 let shapes3D = [];
 let insshapes = [];
 let count = 0;
@@ -111,7 +110,7 @@ function onClick() {
          shape3D.click();
        }
      }
-     console.log("Intersected object", obj);
+     // console.log("Intersected object", obj);
    }
 }
 
@@ -258,7 +257,6 @@ function startGame(songIndex) {
     let geometry;
     if (colors[i].shape) {
       // Cube
-      // STILL HAVE TO ADD MUSIC NODE TO THE SHAPES
       const side = 0.5 + Math.random() / 5;
       geometry = new THREE.BoxGeometry( side, side, side );
     }
@@ -276,26 +274,24 @@ function startGame(songIndex) {
     let shape = new THREE.Mesh( geometry, mat );
     shape.position.set(xs[i], y, 1);
     scene.add( shape );
-    let song = songs[currentSongIndex];
-    let shape3D = new Shape3D(shape, song, "8n", i, scene);
-    shapes.push(shape);
-    shapes3D.push(shape3D);
-
+    
+    shapes3D.push(new Shape3D(shape, songs[songIndex], "8n", i, scene, colors[i].shape, colors[i].color));
   }
-  // songs[songIndex].last = xs.length;
+  songs[songIndex].last = xs.length;
   colorIndex = xs.length;
   checkColorIndex();
+
+  // console.log("shape: ", shapes3D[0].mesh);
 
   // Animate the shapes in the scene
   var animate = function () {
     requestAnimationFrame( animate );
 
-    for (let i = 0; i < shapes.length; i++) {
-      // console.log("x: ", shapes[i].position.x);
-      const rand = (Math.random() + shapes[i].position.y) / 30;
-      shapes[i].rotation.x += rand;
-      shapes[i].rotation.y += rand;
-      shapes[i].rotation.z += rand;
+    for (let i = 0; i < shapes3D.length; i++) {
+      const rand = (Math.random() + shapes3D[i].mesh.position.y) / 30;
+      shapes3D[i].mesh.rotation.x += rand;
+      shapes3D[i].mesh.rotation.y += rand;
+      shapes3D[i].mesh.rotation.z += rand;
     }
 
     renderer.render( scene, camera );
@@ -357,8 +353,6 @@ window.onload = function() {
   c.addEventListener("click", function() {
     onClick();
   });
-
-
-
+  
   camera.position.z = 5;
 };
