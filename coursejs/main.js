@@ -22,6 +22,7 @@ let renderer;
 let raycaster;
 let mouse;
 
+let wrongShapeClicks = 0;
 let shapes3D = [];
 let insshapes = [];
 let count = 0;
@@ -89,11 +90,6 @@ function initInsCanvas() {
 }
 
 function onClick() {
-  // console.log(shapes);
-  // for (var i = 0; i < shapes.length; i++) {
-  //   let shape = shapes[i];
-  //   shape.click(event);
-  // }
   var c = document.getElementById("canvas");
   var canvasOffset = c.getBoundingClientRect();
   var eventX = event.pageX - canvasOffset.x;
@@ -110,7 +106,6 @@ function onClick() {
          shape3D.click();
        }
      }
-     // console.log("Intersected object", obj);
    }
 }
 
@@ -156,19 +151,21 @@ function populateGuess() {
 
 function checkAnswer(song) {
   clearInterval(timerID);
-
+  
   let correctSong = songs[currentSongIndex];
   let correctSongName = correctSong.name + " by " + correctSong.artist;
   if (correctSongName === song) {
     document.getElementById('modalscore').style.display = "block";
     document.getElementById('modalmiss').style.display = "block";
     document.getElementById('modaltotal').style.display = "block";
-    document.getElementById('leaderboard').style.display = "block";
 
     let time = parseFloat(document.getElementById('timer').innerHTML.split(":")[1]);
+    let score = (100 - time) < 0 ? "0" : (100-time);
     $('#modaltitle').text("Congratulation!");
     $('#modalbody').text("Your time: " + time);
-    $('#modalscore').text("Score: " + ((100 - time < 0 ? 0 : (100-time))));
+    $('#modalscore').text("Score: " + score);
+    $('#modalmiss').text("Wrong shape clicks: " + wrongShapeClicks);
+    $('#modaltotal').text("TOTAL: " + (score - wrongShapeClicks));
     $('#nextaction').text("Play next song");
     (document.getElementById("nextaction")).setAttribute("class", "btn btn-success");
 
@@ -189,7 +186,6 @@ function checkAnswer(song) {
     document.getElementById('modalscore').style.display = "none";
     document.getElementById('modalmiss').style.display = "none";
     document.getElementById('modaltotal').style.display = "none";
-    document.getElementById('leaderboard').style.display = "none";
     $('#nextaction').text("Try again");
     (document.getElementById("nextaction")).setAttribute("class", "btn btn-dark");
 
@@ -202,12 +198,17 @@ function checkAnswer(song) {
 }
 
 function setUpGame(songIndex) {
+  scene.remove.apply(scene, scene.children);
+  shapes3D = [];
+  
   // Hide guess buttons
   hideGuessButtons();
 
   // Do 3..2..1.. count down before starting the game
   let inscanvas = document.getElementById("instructioncanvas");
   let ctx = inscanvas.getContext("2d");
+
+  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
   ctx.font = "30px Arial";
   ctx.fillStyle = "red";
@@ -217,14 +218,14 @@ function setUpGame(songIndex) {
     ctx.fillText("2..", 345, 30);
 
     setTimeout(function() {
-      ctx.fillText("1..", 380, 30);
+      ctx.fillText("1..", 375, 30);
 
       setTimeout(function() {
         ctx.fillStyle = "green";
         ctx.fillText("GO!!!", 410, 30);
 
         setTimeout(function() {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
           startGame(songIndex);
           showGuessButtons();
           populateGuess();
@@ -235,23 +236,24 @@ function setUpGame(songIndex) {
 }
 
 function startGame(songIndex) {
+  wrongShapeClicks = 0;
   insshapes = [];
   colorIndex = 0;
   shuffle(xs);
   shuffle(colors);
-
+  shapes3D = [];
+  scene.remove.apply(scene, scene.children);
+  
   // draw shapes on main canvas
   for (var i = 0; i < xs.length; i++) {
     let y = Math.round(Math.random() * 3) - 2;
 
     let geometry;
     if (colors[i].shape) {
-      // Cube
       const side = 0.5 + Math.random() / 5;
       geometry = new THREE.BoxGeometry( side, side, side );
     }
     else {
-      // Sphere
       geometry = new THREE.SphereGeometry( 0.3 + Math.random() / 6, 10, 10 );
     }
 
@@ -270,23 +272,6 @@ function startGame(songIndex) {
   songs[songIndex].last = xs.length;
   colorIndex = xs.length;
   checkColorIndex();
-
-  // console.log("shape: ", shapes3D[0].mesh);
-
-  // Animate the shapes in the scene
-  var animate = function () {
-    requestAnimationFrame( animate );
-
-    for (let i = 0; i < shapes3D.length; i++) {
-      const rand = (Math.random() + shapes3D[i].mesh.position.y) / 30;
-      shapes3D[i].mesh.rotation.x += rand;
-      shapes3D[i].mesh.rotation.y += rand;
-      shapes3D[i].mesh.rotation.z += rand;
-    }
-
-    renderer.render( scene, camera );
-  };
-  animate();
 
   // draw shapes on instruction canvas
   initInsCanvas();
@@ -345,4 +330,19 @@ window.onload = function() {
   });
 
   camera.position.z = 5;
+
+  // Animate the shapes in the scene
+  var animate = function () {
+    requestAnimationFrame( animate );
+
+    for (let i = 0; i < shapes3D.length; i++) {
+      const rand = (Math.random() + shapes3D[i].mesh.position.y) / 30;
+      shapes3D[i].mesh.rotation.x += rand;
+      shapes3D[i].mesh.rotation.y += rand;
+      shapes3D[i].mesh.rotation.z += rand;
+    }
+
+    renderer.render( scene, camera );
+  };
+  animate();
 };

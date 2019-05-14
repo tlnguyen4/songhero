@@ -16,10 +16,6 @@ function Shape3D(mesh, song, dur, pos, scene, isBox, color) {
 
     // check that the shape just clicked is the correct order
     const topShape = insshapes[0];
-
-    console.log("topShape: ", topShape);
-    console.log("this.color: ", this.color);
-    console.log("this.isBox: ", this.isBox);
    
     if (topShape.color === this.color && topShape.shape === this.isBox) {
       remove = true;
@@ -27,6 +23,7 @@ function Shape3D(mesh, song, dur, pos, scene, isBox, color) {
     }
     else {
       remove = false;
+      wrongShapeClicks++;
     }
 
     // Remove shape and check if we need to redraw on game canvas
