@@ -237,11 +237,12 @@ function startGame(songIndex) {
     if (colors[i].shape) {
       // Cube
       // STILL HAVE TO ADD MUSIC NODE TO THE SHAPES
-      geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
+      const side = 0.5 + Math.random() / 5;
+      geometry = new THREE.BoxGeometry( side, side, side );
     }
     else {
       // Sphere
-      geometry = new THREE.SphereGeometry( 0.3, 10, 10 );
+      geometry = new THREE.SphereGeometry( 0.3 + Math.random() / 6, 10, 10 );
     }
 
     const color = getRGB(colors[i].color);
@@ -265,10 +266,11 @@ function startGame(songIndex) {
     requestAnimationFrame( animate );
 
     for (let i = 0; i < shapes.length; i++) {
-      const rand = Math.random() / 15;
+      console.log("x: ", shapes[i].position.x);
+      const rand = (Math.random() + shapes[i].position.y) / 30;
       shapes[i].rotation.x += rand;
-      shapes[i].rotation.y -= rand;
-      shapes[i].rotation.z -= rand;
+      shapes[i].rotation.y += rand;
+      shapes[i].rotation.z += rand;
     }
 
     renderer.render( scene, camera );
