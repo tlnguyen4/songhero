@@ -39,7 +39,6 @@ function Shape3D(mesh, song, dur, pos, scene, isBox, color) {
       this.pos = this.song.last;
       this.song.last = this.song.last + 1;
 
-      let shape;
       if (this.pos < this.song.notes.length) {
         const newColor = colors[colorIndex];
         colorIndex++;
@@ -48,7 +47,7 @@ function Shape3D(mesh, song, dur, pos, scene, isBox, color) {
         this.isBox = newColor.shape;
         this.color = newColor.color;
 
-        let y = Math.round(Math.random() * 3) - 2;
+        let y = Math.random() * 2 - 2;
 
         let geometry;
         if (this.isBox) {

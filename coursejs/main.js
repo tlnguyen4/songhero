@@ -22,6 +22,7 @@ let renderer;
 let raycaster;
 let mouse;
 
+let counter = {"-4": true, "-3": false, "-2": true, "-1": false, "0": true, "1": false, "2": true, "3": false, "4": true};
 const numberOfSongs = 3;
 let wrongShapeClicks = 0;
 let shapes3D = [];
@@ -337,10 +338,22 @@ window.onload = function() {
     requestAnimationFrame( animate );
 
     for (let i = 0; i < shapes3D.length; i++) {
+      const currShape = shapes3D[i].mesh;
       const rand = (Math.random() + shapes3D[i].mesh.position.y) / 30;
-      shapes3D[i].mesh.rotation.x += rand;
-      shapes3D[i].mesh.rotation.y += rand;
-      shapes3D[i].mesh.rotation.z += rand;
+      currShape.rotation.x += rand;
+      currShape.rotation.y += rand;
+      currShape.rotation.z += rand;
+
+      if (counter["" + currShape.position.x]) {
+        currShape.position.y += 0.01;
+      }
+      else {
+        currShape.position.y -= 0.01;
+      }
+
+      if (currShape.position.y >= 2 || currShape.position.y <= -2) {
+        counter["" + currShape.position.x] = !counter["" + currShape.position.x];
+      }
     }
 
     renderer.render( scene, camera );
