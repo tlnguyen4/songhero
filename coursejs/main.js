@@ -294,6 +294,17 @@ function startGame(songIndex) {
   shapes3D = [];
   scene.remove.apply(scene, scene.children);
 
+  // Mixing up which way the shapes move
+  Object.keys(counter).forEach(function(key,index) {
+    const r = Math.random();
+    if (r < 0.5) {
+      counter[key] = true;
+    }
+    else {
+      counter[key] = false;
+    }
+  });
+
   // draw shapes on main canvas
   for (var i = 0; i < xs.length; i++) {
     let y = Math.round(Math.random() * 3) - 2;
