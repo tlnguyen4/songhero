@@ -16,7 +16,7 @@ function Shape3D(mesh, song, dur, pos, scene, isBox, color) {
 
     // check that the shape just clicked is the correct order
     const topShape = insshapes[0];
-   
+
     if (topShape.color === this.color && topShape.shape === this.isBox) {
       remove = true;
       insshapes.shift();
@@ -31,7 +31,12 @@ function Shape3D(mesh, song, dur, pos, scene, isBox, color) {
       const x = this.mesh.position.x;
       //create a synth and connect it to the master output (your speakers)
       var synth = new Tone.Synth().toMaster();
-      synth.triggerAttackRelease(this.song.notes[this.pos], this.duration);
+
+      if (this.pos === this.song.notes.length - 1) {
+        lastShape = true;
+      }
+
+      synth.triggerAttackRelease(this.song.notes[this.pos], "8n");
 
       // make disappear
       this.remove();
@@ -77,7 +82,7 @@ function Shape3D(mesh, song, dur, pos, scene, isBox, color) {
           else {
             shape = new Shape(845, 25, "instructioncanvas", 15, colors[colorIndex].color, undefined, undefined, undefined, colors[colorIndex].shape);
           }
-          
+
           insshapes.push(shape);
         }
       }

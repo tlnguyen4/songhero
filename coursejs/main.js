@@ -23,8 +23,9 @@ let raycaster;
 let mouse;
 
 let counter = {"-4": true, "-3": false, "-2": true, "-1": false, "0": true, "1": false, "2": true, "3": false, "4": true};
-const numberOfSongs = 3;
+const numberOfSongs = 6;
 let wrongShapeClicks = 0;
+let lastShape = false;
 let shapes3D = [];
 let insshapes = [];
 let count = 0;
@@ -33,8 +34,8 @@ let colorIndex = 0;
 const colors = [{"color": "maroon", "shape": 0}, {"color": "maroon", "shape": 1}, {"color": "olive", "shape": 0}, {"color": "olive", "shape": 1}, {"color": "orange", "shape": 0}, {"color": "orange", "shape": 1}, {"color": "green", "shape": 0}, {"color": "green", "shape": 1}, {"color": "navy", "shape": 0}, {"color": "navy", "shape": 1}, {"color": "purple", "shape": 0}, {"color": "purple", "shape": 1}, {"color": "silver", "shape": 0}, {"color": "silver", "shape": 1}, {"color": "black", "shape": 0}, {"color": "black", "shape": 1}, {"color": "teal", "shape": 0}, {"color": "teal", "shape": 1}];
 const xs = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
 
-const names = ["Happy Birthday", "Twinkle Twinkle Little Star", "Jingle Bells"];;
-const artists = ["Unknown", "Jane Taylor", "James Lord Pierpont"]
+const names = ["Happy Birthday", "Twinkle Twinkle Little Star", "Jingle Bells", "London Bridge", "Jack and Jill", "Hot Cross Buns"];
+const artists = ["Unknown", "Jane Taylor", "James Lord Pierpont", "Unknown", "Unknown", "Unknown"]
 const notes = [["D4", "D4", "E4", "D4", "G4", "F#4", "D4", "D4",
     "E4", "D4", "A4", "G4", "D4", "D4", "d4", "B4", "G4", "F#4",
     "E4", "c4", "c4", "B4", "G4", "A4", "G4"],
@@ -46,7 +47,25 @@ const notes = [["D4", "D4", "E4", "D4", "G4", "F#4", "D4", "D4",
     "D4", "E4", "F4", "F4", "F4", "F4", "F4", "E4", "E4", "E4", "E4", "E4",
     "D4", "D4", "E4", "D4", "D4", "E4", "D4", "G4", "E4", "E4", "E4", "E4",
     "E4", "E4", "E4", "G4", "C4", "D4", "E4", "F4", "F4", "F4", "F4",
-    "F4", "E4", "E4", "E4", "E4", "G4", "G4", "F4", "D4", "C4"]];
+    "F4", "E4", "E4", "E4", "E4", "G4", "G4", "F4", "D4", "C4"],
+    ["G4", "A4", "G4", "F4", "E4", "F4", "G4",
+    "D4", "E4", "F4", "E4", "F4", "G4", "G4",
+    "A4", "G4", "F4", "E4", "F4", "G4", "D4",
+    "G4", "E4", "C4", "G4", "A4", "G4", "F4",
+    "E4", "F4", "G4", "D4", "E4", "F4", "E4",
+    "F4", "G4", "G4", "A4", "G4", "F4", "E4",
+    "F4", "G4", "D4", "G4", "E4", "C4"],
+    ["D4", "D4", "E4", "F4", "G4", "A4",
+    "B4", "C4", "D4", "D4", "D4", "D4", "D4",
+    "D4", "D4", "C4", "B4", "A4", "G4",
+  "F4", "E4", "D4", "D4", "D4", "D4"],
+["E4", "D4", "C4", "E4", "D4", "C4", "C4",
+  "C4", "D4", "D4", "D4", "E4", "D4", "C4",
+  "E4", "D4", "C4", "E4", "D4", "C4", "C4",
+    "C4", "D4", "D4", "D4", "E4", "D4", "C4",
+    "E4", "D4", "C4", "E4", "D4", "C4", "C4",
+      "C4", "D4", "D4", "D4", "E4", "D4", "C4"]];
+
 
 let songs = [];
 for (let i = 0; i < numberOfSongs; i++) {
@@ -109,6 +128,17 @@ function onClick() {
        }
      }
    }
+
+   if (lastShape) {
+     var counter = 0;
+     var interval = setInterval(function() {
+       counter++;
+     if (counter === 5 && lastShape === true) {
+       clearInterval(interval);
+       showGameOverModal()
+     }
+   }, 1000);
+  }
 }
 
 function checkColorIndex() {
@@ -140,7 +170,7 @@ function hideGuessButtons() {
 }
 
 function populateGuess() {
-  const fakeNames = [{"name": names[0], "artist": artists[0]}, {"name": names[1], "artist": artists[1]}, {"name": names[2], "artist": artists[2]}, {"name": "Baba Black Sheep", "artist": "Uknown"}, {"name": "Mary has a little lamp", "artist": "Buddy Guy"}, {"name": "Old McDonald has a farm", "artist": "Thomas d'Urley"}];
+  const fakeNames = [{"name": names[0], "artist": artists[0]}, {"name": names[1], "artist": artists[1]}, {"name": names[2], "artist": artists[2]}, {"name": names[3], "artist": artists[3]}, {"name": names[4], "artist": artists[4]}, {"name": names[5], "artist": artists[5]}];
 
   shuffle(fakeNames);
 
@@ -151,9 +181,26 @@ function populateGuess() {
   }
 }
 
+//
+function showGameOverModal() {
+  $('#modaltitle').text("You failed!");
+  $('#modalbody').text("You ran out of time. You have five seconds to choose the right song. Try again!");
+  document.getElementById('modalscore').style.display = "none";
+  document.getElementById('modalmiss').style.display = "none";
+  document.getElementById('modaltotal').style.display = "none";
+  $('#nextaction').text("Try again");
+  (document.getElementById("nextaction")).setAttribute("class", "btn btn-dark");
+
+  $('#modal').modal('toggle');
+
+  document.getElementById('nextaction').addEventListener('click', function() {
+    setUpGame(currentSongIndex);
+  });
+}
+
 function checkAnswer(song) {
   clearInterval(timerID);
-  
+
   let correctSong = songs[currentSongIndex];
   let correctSongName = correctSong.name + " by " + correctSong.artist;
   if (correctSongName === song) {
@@ -174,7 +221,7 @@ function checkAnswer(song) {
     $('#modal').modal('toggle');
 
     currentSongIndex++;
-    if (currentSongIndex >= 3) {
+    if (currentSongIndex >= numberOfSongs) {
       currentSongIndex = 0;
     }
 
@@ -200,9 +247,10 @@ function checkAnswer(song) {
 }
 
 function setUpGame(songIndex) {
+  lastShape = false;
   scene.remove.apply(scene, scene.children);
   shapes3D = [];
-  
+
   // Hide guess buttons
   hideGuessButtons();
 
@@ -245,7 +293,7 @@ function startGame(songIndex) {
   shuffle(colors);
   shapes3D = [];
   scene.remove.apply(scene, scene.children);
-  
+
   // draw shapes on main canvas
   for (var i = 0; i < xs.length; i++) {
     let y = Math.round(Math.random() * 3) - 2;
@@ -268,7 +316,7 @@ function startGame(songIndex) {
     let shape = new THREE.Mesh( geometry, mat );
     shape.position.set(xs[i], y, 1);
     scene.add( shape );
-    
+
     shapes3D.push(new Shape3D(shape, songs[songIndex], "8n", i, scene, colors[i].shape, colors[i].color));
   }
   songs[songIndex].last = xs.length;
@@ -305,9 +353,23 @@ function startGame(songIndex) {
   }, 100);
 }
 
+function showInstructionsModal() {
+
+}
+
 window.onload = function() {
   document.getElementById("start").addEventListener("click", function() {
     setUpGame(currentSongIndex);
+  });
+
+  document.getElementById("instructions").addEventListener("click", function() {
+    $('#modaltitle').text("How to Play");
+    $('#modalbody').text("Play Song Hero by clicking on the different 3D shapes that pop up on the screen in the order at the top of the screen. Every time you click on a 3D shape in the right order, a piano note will play. The objective of the game is to correctly guess the name of the song from the list of six choices to the right of the screen as soon as possible. After clicking on all the 3D shapes and playing all the notes, you will have five seconds to guess the song correctly. If you guess the wrong song or fail to make a guess within five seconds, you will need to repeat the round until you correctly guess the song in under five seconds. Once you correctly guess the song, you can move on to the next round. Try to guess the songs as quickly as possible without clicking on the shapes out of order.");
+
+    $('#nextaction').text("Close");
+    (document.getElementById("nextaction")).setAttribute("class", "btn btn-dark");
+
+    $('#modal').modal('toggle');
   });
 
   for (var i = 1; i <= 6; i++) {
