@@ -341,10 +341,10 @@ function startGame(songIndex) {
     let shape;
     // draw the square
     if (colors[i].shape) {
-      shape = new Shape(xaxis[i], 25, "instructioncanvas", 30, colors[i].color, undefined, undefined, undefined, colors[i].shape);
+      shape = new Shape(xaxis[i], 25, "instructioncanvas", 30, colors[i].color, colors[i].shape);
     }
     else {
-      shape = new Shape(xaxis[i], 25, "instructioncanvas", 15, colors[i].color, undefined, undefined, undefined, colors[i].shape);
+      shape = new Shape(xaxis[i], 25, "instructioncanvas", 15, colors[i].color, colors[i].shape);
     }
 
     insshapes.push(shape);

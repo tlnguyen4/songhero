@@ -77,10 +77,10 @@ function Shape3D(mesh, song, dur, pos, scene, isBox, color) {
         if (this.pos < this.song.notes.length - 1) {
           let shape;
           if (colors[colorIndex].shape) {
-            shape = new Shape(845, 25, "instructioncanvas", 30, colors[colorIndex].color, undefined, undefined, undefined, colors[colorIndex].shape);
+            shape = new Shape(845, 25, "instructioncanvas", 30, colors[colorIndex].color, colors[colorIndex].shape);
           }
           else {
-            shape = new Shape(845, 25, "instructioncanvas", 15, colors[colorIndex].color, undefined, undefined, undefined, colors[colorIndex].shape);
+            shape = new Shape(845, 25, "instructioncanvas", 15, colors[colorIndex].color, colors[colorIndex].shape);
           }
 
           insshapes.push(shape);
