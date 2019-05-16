@@ -1,4 +1,4 @@
-### Introduction
+## Introduction
 For our COS 426 final project, we were inspired by the game Guitar Hero, which is a music rhythm game in which players use a game controller to simulate playing rock music songs on a guitar.
 
 ## Goal
