@@ -366,6 +366,10 @@ window.onload = function() {
     $('#modaltitle').text("How to Play");
     $('#modalbody').text("Play Song Hero by clicking on the different 3D shapes that pop up on the screen in the order at the top of the screen. Every time you click on a 3D shape in the right order, a piano note will play. The objective of the game is to correctly guess the name of the song from the list of six choices to the right of the screen as soon as possible. After clicking on all the 3D shapes and playing all the notes, you will have five seconds to guess the song correctly. If you guess the wrong song or fail to make a guess within five seconds, you will need to repeat the round until you correctly guess the song in under five seconds. Once you correctly guess the song, you can move on to the next round. Try to guess the songs as quickly as possible without clicking on the shapes out of order.");
 
+    document.getElementById('modalscore').style.display = "none";
+    document.getElementById('modalmiss').style.display = "none";
+    document.getElementById('modaltotal').style.display = "none";
+
     $('#nextaction').text("Close");
     (document.getElementById("nextaction")).setAttribute("class", "btn btn-dark");
 
